@@ -1,5 +1,6 @@
 name: CI
 on:
+  workflow_dispatch:
   push:
     branches: [ master, main, fix ]
   pull_request:
@@ -42,22 +43,3 @@ jobs:
       - name: Build
         run: |
           sudo make -j $(nproc)
-
-      - name: Make Llamafile
-        run: |
-          cp ./models/TinyLLama-v0.1-5M-F16.gguf tinyllama.gguf
-          cat << EoF > .args
-          -m
-          tinyllama.gguf
-          ...
-          EoF
-          cp o//llama.cpp/main/main \
-            tinyllama.llamafile
-          o//llamafile/zipalign -j0 \
-            tinyllama.llamafile \
-            tinyllama.gguf \
-            .args
-
-      - name: Execute LLM CLI CPU  # GA doesn't have "support_simdgroup_reduction" for RMS_NORM :'(
-        run: |
-          ./tinyllama.llamafile -e -p '## Famous Speech\n\nFour score and seven' -n 50 -ngl 0

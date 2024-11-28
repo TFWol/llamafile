@@ -40,6 +40,12 @@ jobs:
         run: |
           sudo make cosmocc-ci PREFIX=/usr
 
-      - name: Build
+      - name: Build llamafile
         run: |
-          sudo make -j $(nproc)
+          sudo make -j $(nproc) o/$(MODE)/llama.cpp/main/main
+
+      - name: Upload llamafile artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: llamafile
+          path: o/$(MODE)/llama.cpp/main/main

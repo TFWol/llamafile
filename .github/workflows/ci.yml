@@ -1,10 +1,9 @@
 name: CI
 on:
-  workflow_dispatch:
-#  push:
-#    branches: [ master, main, fix ]
-#  pull_request:
-#    branches: [ master, main, fix ]
+  push:
+    branches: [ master, main, fix ]
+  pull_request:
+    branches: [ master, main, fix ]
 
 jobs:
   ubuntu-focal-make:
@@ -40,19 +39,47 @@ jobs:
         run: |
           sudo make cosmocc-ci PREFIX=/usr
 
-      - name: Build llamafile
+      - name: Build
         run: |
-          sudo mkdir -p o/release
-          sudo make -j $(nproc) o/release/llamafile o/release/llama.cpp
-          pwd
-          echo listing dirs
-          ls o/release
-          ls /home/runner/work/llamafile/llamafile
+          sudo make -j $(nproc)
+
+      - name: List files
+        run: |
+          sudo apt-get install tree
+          echo ######## O Listing:
+          tree -a -h
+
+      # - name: Make Llamafile
+      #   run: |
+      #     cp ./models/TinyLLama-v0.1-5M-F16.gguf tinyllama.gguf
+      #     cat << EoF > .args
+      #     -m
+      #     tinyllama.gguf
+      #     ...
+      #     EoF
+      #     cp o//llama.cpp/main/main \
+      #       tinyllama.llamafile
+      #     o//llamafile/zipalign -j0 \
+      #       tinyllama.llamafile \
+      #       tinyllama.gguf \
+      #       .args
+
+      # - name: Execute LLM CLI CPU  # GA doesn't have "support_simdgroup_reduction" for RMS_NORM :'(
+      #   run: |
+      #     ./tinyllama.llamafile -e -p '## Famous Speech\n\nFour score and seven' -n 50 -ngl 0
+
+      # - name: Build llamafile
+      #   run: |
+      #     sudo mkdir -p o/release
+      #     sudo make -j $(nproc) o/release/llamafile o/release/llama.cpp
+      #     pwd
+      #     echo listing dirs
+      #     ls o/release
+      #     ls /home/runner/work/llamafile/llamafile
 
       - name: Upload llamafile artifact
         uses: actions/upload-artifact@v3
         with:
           name: llamafile
           path: |
-            o/release/
-            /home/runner/work/llamafile/llamafile
+            /usr/local/bin/llamafile*

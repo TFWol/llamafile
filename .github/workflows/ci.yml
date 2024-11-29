@@ -1,10 +1,10 @@
 name: CI
 on:
   workflow_dispatch:
-  push:
-    branches: [ master, main, fix ]
-  pull_request:
-    branches: [ master, main, fix ]
+#  push:
+#    branches: [ master, main, fix ]
+#  pull_request:
+#    branches: [ master, main, fix ]
 
 jobs:
   ubuntu-focal-make:
@@ -42,10 +42,11 @@ jobs:
 
       - name: Build llamafile
         run: |
-          sudo make -j $(nproc) o/$(MODE)/llama.cpp/main/main
+          sudo mkdir -p o/release
+          sudo make -j $(nproc) o/release
 
       - name: Upload llamafile artifact
         uses: actions/upload-artifact@v3
         with:
           name: llamafile
-          path: o/$(MODE)/llama.cpp/main/main
+          path: o/release/

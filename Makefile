@@ -18,7 +18,9 @@ include llama.cpp/BUILD.mk
 # Modify main target to build only llamafile-related components
 .PHONY: o/$(MODE)/
 o/$(MODE)/:	o/$(MODE)/llamafile					\
-		o/$(MODE)/llama.cpp
+		o/$(MODE)/llama.cpp					\
+		o/$(MODE)/stb						\
+		o/$(MODE)/depend.test
 
 # Adjust install target for llamafile-related binaries and man pages
 .PHONY: install

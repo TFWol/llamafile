@@ -44,6 +44,8 @@ jobs:
         run: |
           sudo mkdir -p o/release
           sudo make -j $(nproc) o/release
+          pwd
+          ls o/release
 
       - name: Upload llamafile artifact
         uses: actions/upload-artifact@v3

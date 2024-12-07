@@ -44,7 +44,9 @@ jobs:
         run: |
           sudo apt-get install tree
           echo ######## O Listing:
-          tree -a -h
+          tree -a -h o
+          ls o
+          
 
       # - name: Make Llamafile
       #   run: |
@@ -80,3 +82,4 @@ jobs:
           name: llamafile
           path: |
             /usr/local/bin/llamafile*
+            /o/**/llamafile

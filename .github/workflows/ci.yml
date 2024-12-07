@@ -81,5 +81,4 @@ jobs:
         with:
           name: llamafile
           path: |
-            /usr/local/bin/llamafile*
             /o/**/llamafile
